@@ -58,7 +58,8 @@ def index():
 @app.route('/search')
 def search_e():
     query = request.args.get('query')
-    return search_r(query_
+    return search_r(query)
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
 
