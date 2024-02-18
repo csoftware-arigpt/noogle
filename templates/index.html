@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>noogle</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .send-but {
+          background-color:#490eb5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center">
+	   <img src="{{ url_for('static', filename='noogle.png') }}" class="image" />
+        <p><form action="/search" method="GET">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="query">
+                    <div class="input-group-append">
+			    <button type="submit" class="btn send-but btn-primary">🔎</button>
+                    </div>
+                </div>
+        </form></p>
+        </div>
+    </div>
+</body>
+</html>
+
