@@ -6,3 +6,4 @@ gunicorn
 js2py
 cloudscraper
 beautifulsoup4
+googlesearch
