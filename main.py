@@ -22,23 +22,23 @@ def search_r(query):
     ecosia_page_request = scraper.get("https://www.ecosia.org/search?method=index", headers=headers, params={"q": query})
     ecosia_page_content = ecosia_page_request.text
     
-    duckduckgo_page_request = requests.get("https://html.duckduckgo.com/html", headers=headers, data={"q": query})
+    duckduckgo_page_request = requests.get("https://api.duckduckgo.com/", headers=headers, params={"q": query, "format": "json"})
     duckduckgo_page_content = duckduckgo_page_request.text
-    
-    
-    soup_ddg = BeautifulSoup(duckduckgo_page_content, "html.parser")
+    duckduckgo_page_content = json.loads(duckduckgo_page_content)
+
     soup_ecosia = BeautifulSoup(ecosia_page_content, "html.parser")
 
     google_search = googlesearch.search(query,advanced=True, lang="EN", num_results=5)
     google_search = list(google_search)
     json_google = json.loads(json.dumps([{'description': result.description, 'url': result.url, 'title': result.title} for result in google_search]))
     answers[0]["google"].append(json_google)
-    for el in soup_ddg.select(".result"):
-        answers[0]["duckduckgo"].append(
-                {"title": el.select_one(".result__a").text,
-                "url": el.select_one(".result__snippet")['href'],
-                "description": el.select_one(".result__snippet").text}
-                )
+    for topic in duckduckgo_page_content["RelatedTopics"]:
+        if "FirstURL" in topic and "Result" in topic and "Text" in topic:
+            answers[0]['duckduckgo'].append({
+                "title": topic["Result"].split(">")[1].split("<")[0],
+                "url": topic["FirstURL"],
+                "description": topic["Text"]
+                })
     for el in soup_ecosia.select(".result__body"):
         answers[0]["ecosia"].append({
                 "title": el.select_one('.result-title__heading').text,
