@@ -2,7 +2,7 @@
     style="display: block; 
            margin-left: auto;
            margin-right: auto;
-           width: 30%;"
+           width: 100%;"
     src="https://github.com/csoftware-arigpt/noogle/blob/main/static/noogle.png?raw=true" 
     alt="noogle">
 </img>
