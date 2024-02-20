@@ -1,10 +1,9 @@
+<p align="center">
 <img 
-    style="display: block; 
-           margin-left: auto;
-           margin-right: auto;
-           width: 100%;"
+    style="width: 50%;"
     src="https://github.com/csoftware-arigpt/noogle/blob/main/static/noogle.png?raw=true" 
     alt="noogle">
 </img>
-<h1 style="text-align: center;">Search engine that respects your privacy</h1>
-<p style="text-align: center;">coming soon</p>
+<h1>Search engine that respects your privacy</h1>
+<p>coming soon</p>
+</p>
