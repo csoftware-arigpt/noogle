@@ -13,9 +13,6 @@ app = Flask(__name__)
 def search_r(query):
     answers = [{"google":[], "ecosia": [], "duckduckgo": []}]
 
-    proxy_list_parsing = asyncio.run(proxy.get_proxy_list())
-    proxy_random = random.randint(0, len(proxy_list_parsing))
-    proxy_list = {"http": f'http://{proxy_list_parsing[proxy_random][0]}:{proxy_list_parsing[proxy_random][1]}', "https": f'http://{proxy_list_parsing[proxy_random][0]}:{proxy_list_parsing[proxy_random][1]}'}
     headers = {
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0"
     }
