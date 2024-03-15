@@ -27,11 +27,13 @@ def search_r(query):
     duckduckgo_page_content = json.loads(duckduckgo_page_content)
 
     soup_ecosia = BeautifulSoup(ecosia_page_content, "html.parser")
-
-    google_search = googlesearch.search(query,advanced=True, lang="EN", num_results=5)
-    google_search = list(google_search)
-    json_google = json.loads(json.dumps([{'description': result.description, 'url': result.url, 'title': result.title} for result in google_search]))
-    answers[0]["google"].append(json_google)
+    try:
+        google_search = googlesearch.search(query,advanced=True, lang="EN", num_results=5)
+        google_search = list(google_search)
+        json_google = json.loads(json.dumps([{'description': result.description, 'url': result.url, 'title': result.title} for result in google_search]))
+        answers[0]["google"].append(json_google)
+    except:
+        pass
     for topic in duckduckgo_page_content["RelatedTopics"]:
         if "FirstURL" in topic and "Result" in topic and "Text" in topic:
             answers[0]['duckduckgo'].append({
