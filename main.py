@@ -7,6 +7,7 @@ import random
 from bs4 import BeautifulSoup
 import googlesearch
 import json
+import lxml
 
 app = Flask(__name__)
 
@@ -22,9 +23,21 @@ def search_r(query):
     ecosia_page_request = scraper.get("https://www.ecosia.org/search?method=index", headers=headers, params={"q": query})
     ecosia_page_content = ecosia_page_request.text
     
-    duckduckgo_page_request = requests.get("https://api.duckduckgo.com/", headers=headers, params={"q": query, "format": "json"})
-    duckduckgo_page_content = duckduckgo_page_request.text
-    duckduckgo_page_content = json.loads(duckduckgo_page_content)
+
+    page = requests.get(f'https://duckduckgo.com/html/?q={query}', headers=headers).text
+    soup = BeautifulSoup(page, 'html.parser').find_all("a", class_="result__url", href=True)
+    for link in soup:
+        get_link = link['href']
+        response = requests.get(get_link, headers=headers)
+        soup = BeautifulSoup(response.text)
+        metas = soup.find_all('meta')
+        website_meta_description = []
+        for m in metas:
+            if m.get ('name') == 'description':
+                desc = m.get('content')
+                website_meta_description.append(desc)
+        answers[0]['duckduckgo'].append({'link': get_link, 'description': website_meta_description})
+
 
     soup_ecosia = BeautifulSoup(ecosia_page_content, "html.parser")
     try:
@@ -34,13 +47,8 @@ def search_r(query):
         answers[0]["google"].append(json_google)
     except:
         pass
-    for topic in duckduckgo_page_content["RelatedTopics"]:
-        if "FirstURL" in topic and "Result" in topic and "Text" in topic:
-            answers[0]['duckduckgo'].append({
-                "title": topic["Result"].split(">")[1].split("<")[0],
-                "url": topic["FirstURL"],
-                "description": topic["Text"]
-                })
+    
+    
     for el in soup_ecosia.select(".result__body"):
         answers[0]["ecosia"].append({
                 "title": el.select_one('.result-title__heading').text,
